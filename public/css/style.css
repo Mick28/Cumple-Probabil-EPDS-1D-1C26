@@ -16,7 +16,7 @@
   --font-serif: 'Crimson Pro', Georgia, serif;
   --font-mono:  'JetBrains Mono', 'Courier New', monospace;
   --max-w:      860px;
-  --section-gap: 5rem;
+  --section-gap: 3rem;
 }
 
 html { scroll-behavior: smooth; }
@@ -74,7 +74,7 @@ body {
 .hero {
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 5rem 2rem 4rem;
+  padding: 2.5rem 2rem 2rem;
   position: relative;
 }
 
@@ -148,7 +148,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1.4fr;
   gap: 3rem;
-  align-items: start;
+  align-items: center;
 }
 
 @media (max-width: 640px) {
@@ -247,9 +247,9 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
 .stat-card.accent .stat-value { color: var(--accent); }
 
-.chart-block { position: relative; }
+.chart-block { position: relative; height: 260px; }
 
-canvas#chart-main { width: 100% !important; }
+canvas#chart-main { width: 100% !important; height: 100% !important; }
 
 .chart-caption {
   font-size: 0.78rem;
