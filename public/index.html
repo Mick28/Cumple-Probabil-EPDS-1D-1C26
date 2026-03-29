@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Problema del Cumpleaños — Probabilidad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="header-label">Estadística y probabilidades para el desarrollo del software 1º D - Grupo 3</span>
+      <nav class="header-nav">
+        <a href="#explorador">Explorador</a>
+        <a href="#explicacion">Demostración</a>
+        <a href="#simulacion">Simulación</a>
+        <a href="#tabla">Tabla</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-number" id="hero-number">89.12%</div>
+      <h1 class="hero-title">El Problema<br><em>del Cumpleaños</em></h1>
+      <p class="hero-sub">
+        En un grupo de <strong>40 personas</strong>, la probabilidad de que al menos dos compartan
+        fecha de cumpleaños supera el 89%. Un resultado que desafía la intuición.
+      </p>
+    </section>
+
+    <!-- Explorador interactivo -->
+    <section class="section" id="explorador">
+      <h2 class="section-title">Explorador</h2>
+      <p class="section-desc">Ajustá el tamaño del grupo y observá cómo cambia la probabilidad.</p>
+
+      <div class="explorer-grid">
+        <div class="explorer-controls">
+          <div class="slider-block">
+            <div class="slider-top">
+              <label for="n-slider">Personas en el grupo</label>
+              <span class="slider-val" id="n-display">40</span>
+            </div>
+            <input type="range" id="n-slider" min="2" max="80" value="40" step="1" />
+            <div class="slider-ticks">
+              <span>2</span><span>20</span><span>40</span><span>60</span><span>80</span>
+            </div>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-card accent">
+              <div class="stat-label">P(coincidencia)</div>
+              <div class="stat-value" id="stat-prob">89.12%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">P(ninguna)</div>
+              <div class="stat-value" id="stat-comp">10.88%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Mínimo para &gt; 50%</div>
+              <div class="stat-value" id="stat-thresh">23 personas</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Mínimo para &gt; 99%</div>
+              <div class="stat-value" id="stat-99">57 personas</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-block">
+          <canvas id="chart-main"></canvas>
+          <p class="chart-caption">Curva de probabilidad teórica — grupo de 2 a 80 personas</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Explicación paso a paso -->
+    <section class="section section-alt" id="explicacion">
+      <h2 class="section-title">Demostración paso a paso</h2>
+      <p class="section-desc">La estrategia es calcular el <em>complemento</em>: la probabilidad de que <strong>nadie</strong> coincida.</p>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <h3>Definir el espacio muestral</h3>
+            <p>Cada persona puede nacer en cualquiera de los <strong>365 días</strong> del año (ignoramos años bisiestos). Asumimos que todas las fechas son igualmente probables.</p>
+            <div class="formula-box">
+              Espacio muestral para <em>k</em> personas = 365<sup>k</sup>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <h3>Calcular P(todos distintos)</h3>
+            <p>Contamos los casos favorables donde <strong>ninguna</strong> fecha se repite, incorporando a cada persona de a una:</p>
+            <ul class="step-list">
+              <li>Persona 1: puede nacer cualquier día → <code>365/365</code></li>
+              <li>Persona 2: debe evitar el día de la persona 1 → <code>364/365</code></li>
+              <li>Persona 3: debe evitar 2 fechas ya tomadas → <code>363/365</code></li>
+              <li>Persona <em>k</em>: debe evitar <em>k−1</em> fechas → <code>(365−k+1)/365</code></li>
+            </ul>
+            <div class="formula-box">
+              P(todos distintos) = <span class="frac"><span class="frac-num">365 × 364 × 363 × … × (365−k+1)</span><span class="frac-den">365<sup>k</sup></span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <h3>Aplicar el complemento</h3>
+            <p>La probabilidad de que <strong>al menos dos coincidan</strong> es simplemente uno menos el resultado anterior:</p>
+            <div class="formula-box formula-highlight">
+              P(≥ 1 coincidencia) = 1 − <span class="frac"><span class="frac-num">365!</span><span class="frac-den">(365−k)! · 365<sup>k</sup></span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <h3>Resultado para k = 40</h3>
+            <p>Multiplicando los 40 factores y restando de 1:</p>
+            <div class="formula-box formula-highlight">
+              P(40) ≈ <strong id="result-40">89.12%</strong>
+            </div>
+            <p class="step-note">La paradoja: con solo <strong>23 personas</strong> ya hay más del 50% de probabilidad de coincidencia. La mayoría esperaría necesitar al menos 183 personas (la mitad de 365).</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Simulación Monte Carlo -->
+    <section class="section" id="simulacion">
+      <h2 class="section-title">Simulación Monte Carlo</h2>
+      <p class="section-desc">
+        N = 1000 repeticiones para k = 1 a 50. Cada punto estima la probabilidad ejecutando
+        <code>cumples(k)</code> → <code>hay_coincidencia()</code> → <code>proporcion_coincidencia(k, N)</code>
+        en el backend Python.
+      </p>
+
+      <div class="sim-controls">
+        <div class="sim-params">
+          <div class="param-group">
+            <label for="sim-N">Repeticiones (N)</label>
+            <input type="number" id="sim-N" min="100" max="1000" value="1000" step="100" />
+          </div>
+          <div class="param-group">
+            <label for="sim-seed">Semilla aleatoria</label>
+            <input type="number" id="sim-seed" value="42" />
+          </div>
+          <button id="sim-btn">&#9654; Ejecutar simulación</button>
+        </div>
+        <div class="sim-status" id="sim-status">Listo para simular</div>
+      </div>
+
+      <div class="sim-results" id="sim-results" style="display:none">
+        <div class="sim-stat-row">
+          <div class="stat-card accent">
+            <div class="stat-label">Umbral simulado (&gt; 50%)</div>
+            <div class="stat-value" id="sim-thresh">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Umbral teórico (&gt; 50%)</div>
+            <div class="stat-value">23 personas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Error medio (sim. vs teórico)</div>
+            <div class="stat-value" id="sim-error">—</div>
+          </div>
+        </div>
+        <div class="chart-block" style="height:280px; margin-top:1.5rem">
+          <canvas id="chart-sim"></canvas>
+        </div>
+        <p class="chart-caption">Simulación Monte Carlo (puntos) vs. solución teórica (línea) — k = 1 a 50</p>
+      </div>
+    </section>
+
+    <!-- Tabla de probabilidades -->
+    <section class="section section-alt" id="tabla">
+      <h2 class="section-title">Tabla de probabilidades</h2>
+      <p class="section-desc">Probabilidades simuladas y teóricas para k = 1 a 50, con diferencia absoluta. Ejecutá la simulación primero.</p>
+
+      <div class="table-controls">
+        <label for="table-filter">Mostrar hasta k =</label>
+        <input type="number" id="table-filter" min="1" max="50" value="50" />
+        <button id="table-btn">Actualizar</button>
+      </div>
+
+      <div class="table-wrap">
+        <table id="prob-table">
+          <thead>
+            <tr>
+              <th>k (personas)</th>
+              <th>P simulada</th>
+              <th>P teórica</th>
+              <th>Diferencia</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <tr><td colspan="5" class="loading">Ejecutá la simulación para ver la tabla completa…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p><strong>Grupo 3 integrado por: Carolina I. Fuentes, Micaela Salinas, Sai Sanchez, Cristian Rodas y Miguel A. Escurra.</strong></p>
+      <span>Estadística y probabilidades para el desarrollo del software 1º D · API Python (Flask) · Simulación Monte Carlo N=1000 · Vercel</span> 
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
