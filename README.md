@@ -46,7 +46,7 @@ No se requieren variables de entorno para el funcionamiento básico.
 
 ## Autores - Grupo 3
 
-Carolina I. Fuentes, Micaela Salinas, Sai Sanchez, Cristian Rodas y Miguel A. Escurra
+Carolina I. Fuentes, Micaela Salinas, Fernando Gerez, Cristian Rodas y Miguel A. Escurra
 
 ---
 
